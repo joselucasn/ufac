@@ -1,0 +1,9 @@
+*.csv
+*.db
+__pycache__/
+dashboard_atual.py
+consolidado_*.js
+logo_*.jpg
+logo_*.png
+*.tar.gz
+seed_concluidas.json
