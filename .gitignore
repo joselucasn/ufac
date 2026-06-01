@@ -1,0 +1,29 @@
+# Credenciais e segredos
+.env
+*.db
+senhas_acesso.txt
+.streamlit/secrets.toml
+.streamlit/config.toml
+
+# Cache Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Backups e temporários
+*.bak
+*.tmp
+teste.txt
+
+# Dados locais (CSV de planilhas)
+planilha_dados.csv
+planilha_medicao.csv
+seed_concluidas.json
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
