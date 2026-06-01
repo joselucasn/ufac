@@ -785,8 +785,51 @@ with hcol1:
                     for b in _badges_top),
             unsafe_allow_html=True
         )
-    st.link_button("👉 Ver O.S. no RUNRUN.it", f"https://{GUEST_HASH}-share.runrun.it/pt-BR/guest/tasks/", use_container_width=True, type="secondary")
-    st.link_button("➕ Nova O.S.", "https://runrun.it/share/form/oJUZ2dYeVZhxikEK", use_container_width=True, type="secondary")
+    # ── Barra de ações (3 botões lado a lado) ──
+    ac1, ac2, ac3 = st.columns(3, gap="small")
+
+    estilo_btn = (
+        "display:flex;align-items:center;justify-content:center;gap:6px;"
+        "background:#1e293b;border:1px solid #334155;border-radius:6px;"
+        "padding:10px 12px;color:#e2e8f0;text-decoration:none;"
+        "font-size:13px;font-weight:500;width:100%;text-align:center;"
+        "transition:all 0.15s;cursor:pointer;"
+    )
+
+    with ac1:
+        st.markdown(f"""
+        <a href="https://{GUEST_HASH}-share.runrun.it/pt-BR/guest/tasks/" target="_blank"
+           style="{estilo_btn}"
+           onmouseover="this.style.borderColor='#4a90d9';this.style.color='#f1f5f9'"
+           onmouseout="this.style.borderColor='#334155';this.style.color='#e2e8f0'">
+            👉 Ver O.S. no RUNRUN.it
+        </a>
+        """, unsafe_allow_html=True)
+
+    with ac2:
+        st.markdown(f"""
+        <a href="https://runrun.it/share/form/oJUZ2dYeVZhxikEK" target="_blank"
+           style="{estilo_btn}"
+           onmouseover="this.style.borderColor='#4a90d9';this.style.color='#f1f5f9'"
+           onmouseout="this.style.borderColor='#334155';this.style.color='#e2e8f0'">
+            ➕ Nova O.S.
+        </a>
+        """, unsafe_allow_html=True)
+
+    with ac3:
+        # Botão toggle para exportador — mesma estética
+        if st.button("📄 Exportar Relatório", key="toggle_exportador", use_container_width=True,
+                     type="secondary",
+                     help="Exportar relatório Excel para fiscalização"):
+            st.session_state.mostrar_exportador = not st.session_state.get("mostrar_exportador", False)
+
+    # ── Expansão do exportador ──
+    if st.session_state.get("mostrar_exportador", False):
+        if tarefas_filtradas:
+            _df_export = pd.DataFrame(tarefas_filtradas)
+            render_exportacao_fiscal(_df_export)
+        else:
+            st.info("Nenhuma O.S. nos filtros atuais.")
 with hcol2:
     contratos_ativos = contratos_selecionados if contratos_selecionados else list(CONTRATOS.keys())
     _st = sum(
@@ -810,11 +853,6 @@ with hcol2:
         </div>
     </div>
     ''', unsafe_allow_html=True)
-
-# ── Exportação Fiscal ──
-if tarefas_filtradas:
-    _df_export = pd.DataFrame(tarefas_filtradas)
-    render_exportacao_fiscal(_df_export)
 
 # Mapeamento de etapas para cada coluna
 VIVACE_ETAPAS = ["PARA LEVANTAMENTO", "PARA EXECUÇÃO", "ATRASADAS", "ELABORAR CONFORMIDADE",
